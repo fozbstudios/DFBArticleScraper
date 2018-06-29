@@ -7,5 +7,13 @@
 
 
 class DisneyfoodblogarticlescraperPipeline(object):
+    def open_spider(self, spider):
+        self.file = open('articles.csv', 'w', encoding='iso-8859-1')
+
+    def close_spider(self, spider):
+        self.file.close()
+
     def process_item(self, item, spider):
+        line = item['title']+','item['url']+','+ "\n"
+        self.file.write(line)
         return item
