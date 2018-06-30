@@ -7,7 +7,7 @@
 
 from scrapy.exceptions import DropItem
 
-class DisneyfoodblogarticlescraperPipeline(object):
+class MyDFBAPipline(object):
     def __init__(self):
         self.url = set()
     def open_spider(self, spider):
@@ -19,8 +19,8 @@ class DisneyfoodblogarticlescraperPipeline(object):
     def process_item(self, item, spider):
         if item['url'] in self.url:
             raise DropItem("Duplicate item found: %s" % item)
-        else
+        else:
             self.url.add(item['url'])
-            line = item['title']+','item['url']+','+ "\n"
+            line = item['title']+','+item['url']+','+ "\n"
             self.file.write(line)
             return item

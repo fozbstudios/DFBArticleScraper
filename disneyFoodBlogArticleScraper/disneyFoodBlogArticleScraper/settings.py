@@ -65,7 +65,7 @@ EXTENSIONS = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'disneyFoodBlogArticleScraper.pipelines.disneyFoodBlogArticleScraperPipeline': 1,
+        'disneyFoodBlogArticleScraper.pipelines.MyDFBAPipline': 1,
 }
 
 LOG_LEVEL = 'INFO'
