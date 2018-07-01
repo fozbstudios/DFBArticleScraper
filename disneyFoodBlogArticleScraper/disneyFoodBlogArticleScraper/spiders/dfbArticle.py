@@ -1,6 +1,7 @@
 # -*- coutf-8 -*-
 import scrapy
 from datetime import date, timedelta,datetime
+from disneyFoodBlogArticleScraper.items import DisneyfoodblogarticlescraperItem
 
 class DfbarticleSpider(scrapy.Spider):
     name = 'dfbArticle'
@@ -29,4 +30,10 @@ class DfbarticleSpider(scrapy.Spider):
             yield scrapy.Request(url=ur, callback=self.parse)
 
     def parse(self, response):
-        pass
+        l=response.css("[class=entry-title] a")
+    for li in l:
+        item = DisneyfoodblogarticlescraperItem()
+        item['title'] =li.css('::text').extract_first()
+        item['url'] =li.css('::attr(href)').extract_first()
+        yield item
+
