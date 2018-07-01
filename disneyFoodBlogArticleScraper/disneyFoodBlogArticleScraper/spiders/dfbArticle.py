@@ -5,6 +5,7 @@ from datetime import date, timedelta,datetime
 class DfbarticleSpider(scrapy.Spider):
     name = 'dfbArticle'
     allowed_domains = ['disneyfoodblog.com']
+    formatDate='%Y_%m_%d'
     def __init__(self, inFile=None):
         self.firstStageURLs=[]
         self.secondStageURLs=[]
@@ -12,16 +13,19 @@ class DfbarticleSpider(scrapy.Spider):
         self.laterDateStr='2017_07_23'#must be YYYY_MM_DD
 
     def start_requests(self):
-        d1 = datetime.strptime(self.earlierDateStr,'%Y_%m_%d').date() # start date
-        d2 = datetime.strptime(self.laterDateStr,'%Y_%m_%d').date() # end date
+        d1 = datetime.strptime(self.earlierDateStr,DfbarticleSpider.formatDate).date() # start date
+        d2 = datetime.strptime(self.laterDateStr,DfbarticleSpider.formatDate).date() # end date
         delta = d2 - d1         # timedelta
 
         for i in range(delta.days + 1): #both inclusive
             cur = d1 + timedelta(i)
-            print(cur)
-            print('')
-            print(cur.split('_'))
+            # print(cur)
+            # print('')
+            dateArr=cur.strftime(DfbarticleSpider.formatDate).split('_')
+            self.firstStageURLs.append('http://www.disneyfoodblog.com/{}/{}/{}/'.format(*dateArr))# use all args in order
+
         for ur in self.firstStageURLs:
+            # print(ur)
             yield scrapy.Request(url=ur, callback=self.parse)
 
     def parse(self, response):
