@@ -11,7 +11,7 @@ class MyDFBAPipline(object):
     def __init__(self):
         self.url = set()
     def open_spider(self, spider):
-        self.file = open('articles.csv', 'w', encoding='iso-8859-1')
+        self.file = open('articles.csv', 'w', encoding='utf-8')
 
     def close_spider(self, spider):
         self.file.close()

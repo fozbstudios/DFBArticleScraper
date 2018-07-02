@@ -7,8 +7,10 @@ class DfbarticleSpider(scrapy.Spider):
     name = 'dfbArticle'
     allowed_domains = ['disneyfoodblog.com']
     formatDate='%Y_%m_%d'
+    handle_httpstatus_list = [404] # so we can add fialed urls
     def __init__(self, inFile=None):
         self.firstStageURLs=[]
+        self.failedURLs=[]
         self.secondStageURLs=[]
         self.earlierDateStr='2017_03_23'#must be YYYY_MM_DD
         self.laterDateStr='2017_07_23'#must be YYYY_MM_DD
@@ -30,6 +32,8 @@ class DfbarticleSpider(scrapy.Spider):
             yield scrapy.Request(url=ur, callback=self.parse)
 
     def parse(self, response):
+        if response.status == 404:
+            self.failedURLs.append(response.url)
         l=response.css("[class=entry-title] a")
         for li in l:
             item = DisneyfoodblogarticlescraperItem()
@@ -37,3 +41,7 @@ class DfbarticleSpider(scrapy.Spider):
             item['url'] =li.css('::attr(href)').extract_first()
             yield item
 
+    def closed(self, reason):
+        with open('404list.txt', "w",encoding='utf-8') as out:
+            for f in self.failedURLs:
+                out.write(f+'\n')
