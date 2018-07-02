@@ -31,9 +31,9 @@ class DfbarticleSpider(scrapy.Spider):
 
     def parse(self, response):
         l=response.css("[class=entry-title] a")
-    for li in l:
-        item = DisneyfoodblogarticlescraperItem()
-        item['title'] =li.css('::text').extract_first()
-        item['url'] =li.css('::attr(href)').extract_first()
-        yield item
+        for li in l:
+            item = DisneyfoodblogarticlescraperItem()
+            item['title'] =li.css('::text').extract_first().replace(',','')
+            item['url'] =li.css('::attr(href)').extract_first()
+            yield item
 
