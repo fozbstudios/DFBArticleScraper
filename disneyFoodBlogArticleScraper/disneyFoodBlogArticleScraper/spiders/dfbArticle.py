@@ -8,6 +8,16 @@ class DfbarticleSpider(scrapy.Spider):
     allowed_domains = ['disneyfoodblog.com']
     formatDate='%Y_%m_%d'
     handle_httpstatus_list = [404] # so we can add fialed urls
+    #multiline for possible long list readability
+    startOfTitleFilter = tuple([i.lower() for i in\
+            [
+                'Disney Food Post Round-up:',
+                'Dining in Disneyland:',
+                'Disneyland Must-Eats:',
+                'Disneyland Must-Eats:',
+            ]\
+            ])
+
     def __init__(self, inFile=None):
         self.firstStageURLs=[]
         self.failedURLs=[]
@@ -39,7 +49,12 @@ class DfbarticleSpider(scrapy.Spider):
             item = DisneyfoodblogarticlescraperItem()
             item['title'] =li.css('::text').extract_first().replace(',','')
             item['url'] =li.css('::attr(href)').extract_first()
-            yield item
+            if not(item['title'].lower().startswith(DfbarticleSpider.startOfTitleFilter)):
+            # if not(item['title'].startswith('Disney Food Post Round-up:')):
+                yield item
+            else:
+                print("nooooooo")
+            # yield item
 
     def closed(self, reason):
         with open('404list.txt', "w",encoding='utf-8') as out:
