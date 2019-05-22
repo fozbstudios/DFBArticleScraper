@@ -22,8 +22,8 @@ class DfbarticleSpider(scrapy.Spider):
         self.firstStageURLs=[]
         self.failedURLs=[]
         self.secondStageURLs=[]
-        self.earlierDateStr='2017_03_23'#must be YYYY_MM_DD
-        self.laterDateStr='2017_07_23'#must be YYYY_MM_DD
+        self.earlierDateStr='2018_05_01'#must be YYYY_MM_DD
+        self.laterDateStr='2019_05_20'#must be YYYY_MM_DD
 
     def start_requests(self):
         d1 = datetime.strptime(self.earlierDateStr,DfbarticleSpider.formatDate).date() # start date
