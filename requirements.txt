@@ -24,7 +24,7 @@ Click==7.0
 colorama==0.4.1
 colorsysplus==2018.8.14.3.6.51
 constantly==15.1.0
-cryptography==2.6.1
+cryptography==3.2
 cssselect==1.0.3
 cssutils==1.0.2
 curtsies==0.3.0
